@@ -1,82 +1,111 @@
-// --------------------------------OBJECTS AND FUNCTIONS IN TYPESCRIPT-------------------
-// type MyData = (product:{
-// name:String;
-// stock:Number;
-// price:Number;
-// present:boolean
+// Generics In Typescript
 
-// })=>void
+const func=<T>(n:T):T=>{
+    return n
+}
 
+const ans = func(5)
+const ans1 = func("5")
+const ans2 = func(true)
 
+// Passing our types
+type Person = {
+    name:string,
+    age:number
+}
 
-// const myData:MyData = (product)=>{
-//     console.log(product)
+const func = <T>(n:T):T=>{
+    return n;
+}
 
-// }
+const User1:Person = {
+    name:"Jigar",
+    age:21
+}
 
-// const product = {
-//     name:"Macbook",
-//     stock:2,
-//     price:450,
-//     present:true
+const ans = func<Person>(User1)
 
-// }
+// Passing multiple types
 
-// myData(product)
+const func=<T,U>(n:T,o:U):{n:T,o:U}=>{
+return {n,o}
+}
 
-// -------------------------------CLASSES IN TYPESCRIPT --------------------------
+const ans = func<number,string>(5,"jigar")
 
-// class Info{
-   
-//     constructor(private height:number,public weight:number,protected power?:number){}
-// }
-
-// const jigar = new Info(122,11)
-
-// console.log(jigar.weight)
-
-// class Info2 extends Info{
-
-
-
-// }
-
-
-// -----------------------------TYPE ASSERTION(DOM MANIPULATION)---------------------------
-
-// -------1st Type-----------------------------------------
-// const btn = document.getElementById("btn") as HTMLElement
-// -------2nd Type-----------------------------------------
-// const btn = document.getElementById("btn")!
-// -------3rd Type-----------------------------------------
-// const btn = <HTMLElement>document.getElementById("btn")
-
-
-
-// const img = document.getElementById("img") as HTMLImageElement
-// const img = document.querySelector("img")!
-
-// img.src
-
-
-const form = document.getElementById("myform") as HTMLFormElement
-
-const myinput = document.querySelector("#myform > input") as HTMLInputElement
-
-
-
-
-
-
-form.onsubmit=(e:SubmitEvent)=>{
-    e.preventDefault()
-
-    const para = document.createElement("p") as HTMLParagraphElement
-const newele = para.textContent= myinput.value
-document.body.append(para)
- 
-    console.log(myinput.value)
-    console.log(typeof myinput.value)
+// Using Extends keyword in generics
+const func = <T,U extends T>(n:T,o:U):{n:T,o:U} =>{
+return {n,o}
 
 }
 
+const ans = func<number,number>(5,66.7)
+
+// Explaining Extends keyword from a good example
+
+type Person1 ={
+    name:string,
+    age:number
+}
+
+type Person2 = {
+    name:string,
+    age:number,
+    email:string
+
+}
+
+const User1:Person1={
+    name:"Jigar",
+    age:45
+}
+
+const User2:Person2={
+    name:"Binit",
+    age:33,
+    email:'Binit@gmail.com'
+}
+
+const func = <T,U extends T>(n:T,o:U):{n:T,o:U}=>{
+return {n,o};
+}
+
+const ans = func<Person1,Person2>(User1,User2)
+
+// Generics by complex example
+
+type Person = {
+  name: string;
+  age: number;
+};
+
+const Users: Person[] = [
+  {
+    name: "Jigar",
+    age: 21,
+  },
+  {
+    name:"Binit",
+    age:22
+  },
+  {
+    name:"Jee",
+    age:34
+  },
+  {
+    name:"Janvi",
+    age:15
+  }
+];
+
+
+const filterByPeople = <T,U extends keyof T >(arr:T[],property:U,value:T[U]):T[]=>{
+
+    return arr.filter((item)=>item[property]===value)
+
+}
+
+const filterPeopleByName = filterByPeople(Users,"name","Jigar")
+const filterPeopleByAge = filterByPeople(Users,"age",22)
+
+console.log(filterPeopleByAge);
